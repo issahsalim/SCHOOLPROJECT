@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} absence form {%endblock%}
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="d-flex justify-content-center m-5">
+    <div class="alert alert-danger alert-dismissible fade show col-6" role="alert">
+        <strong>{{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div> 
+{% endfor %}
+{% endif %}
+ 
+ <div class="container mt-5">
+    <div class="mt-5">
+        <h3 class="text-center">How to Report an Absence Effectively</h3>
+        <p class="text-muted text-center">Follow these guidelines to ensure your absence report is processed smoothly:
+        </p>
+        <ul class="list-group list-group-flush mt-3">
+             
+            <li class="list-group-item">Clearly state the reason for your absence.</li>
+            <li class="list-group-item">Upload Your child pic to make the school notify him or her simply. Note this field is optional</li>
+            <li class="list-group-item">Ensure all information provided is accurate.</li>
+        </ul>
+    </div>
+
+    <div class="mt-5">
+        <h3 class="text-center">Frequently Asked Questions (FAQs)</h3>
+        <div class="accordion mt-3" id="faqAccordion">
+            <div class="accordion-item"> 
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        What should I do if I don't have the child's picture?
+                    </button> 
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#faqAccordion"> 
+                    <div class="accordion-body">
+                        If you don't have any of your child picture, simply explain your reason  as clearly as
+                        possible in the form. Providing honest and detailed information is key.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        How will I know if my absence has been approved?
+                    </button>
+                </h2> 
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        After submitting the form, an alert message will be shown on the screen indicating that your
+                        absence report has been received. Ensure your contact information is up-to-date in case any
+                        further details are needed.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Can I report an absence for multiple days?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, by doing soo this even show how the important the situation is.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-center mb-4 mt-5">Class Absence Form</h2>
+    <div class="card shadow-lg border-0   mb-4" >
+        <div class="card-body p-4 fs-5">
+            <p class="text-muted mb-4 "  >Please fill out the form below to report your absence. Be sure to provide
+                accurate details. If you have your child picture, you can upload them as well. 
+            </p>   
+            <form id="absenceForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    {{ absence_form.Student_Name }}
+                </div>
+                <div class="form-group"> 
+                    {{ absence_form.Student_Class }}
+                </div>
+                <div class="form-group">
+                    {{ absence_form.Parent_Name}}
+                </div>
+
+                <div class="form-group">
+                    {{ absence_form.reason }}
+                </div>
+
+                <div class="form-group" >
+                    <div class="fw-bold">{{ absence_form.proveFile.label_tag }} <span
+                            class="text-muted">(Optional)</span>
+                        </div> 
+                    {{ absence_form.proveFile }} 
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-4 px-4 py-2">Submit</button>
+                </div>
+            </form> 
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 700px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+     }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+     
+
+    .accordion-button:not(.collapsed) {
+        color: #0056b3;
+        background-color: #f1f1f1;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+    }
+
+    .list-group-item {
+        background-color: transparent;
+        border: none;
+    }
+
+    @media (max-width:898px){
+        .container{
+           /* transform: translateY(30px);  */
+        }
+
+    }
+</style>
+
+{% endblock %}

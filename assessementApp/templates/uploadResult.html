@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* General Styling */
+    body {
+        background-color: #f4f7fc;
+    }
+
+    h2,
+    h4 {
+        color: #333;
+    }
+
+    /* Form Section */
+    form {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #218838;
+    }
+
+    /* Messages Section */
+    .message .alert {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Table Section */
+    table {
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    th,
+    td {
+        padding: 15px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #28a745;
+        color: white;
+        border-radius: 10px 10px 0 0;
+    }
+
+    td {
+        border-bottom: 1px solid #ddd;
+    }
+
+    td:last-child {
+        border-bottom: none;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    /* No results */
+    .empty-message {
+        text-align: center;
+        color: #888;
+        font-size: 1.2rem;
+        margin-top: 20px;
+    }
+
+     @media (max-width: 768px) {
+       
+        .message{
+            margin-top:40%;
+        }
+    }
+</style> 
+
+<!-- Display messages -->
+{% if messages %}
+{% for message in messages %}
+
+<div class="d-flex justify-content-center mt-4 message">
+    <div class="alert alert-danger alert-dismissible fade show col-md-4" role="alert">
+        <strong class="text-center">{{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>  
+
+{% endfor %}
+{% endif %}
+
+
+<!-- Form Section -->
+<div class="container mt-5 mb-4">
+    <h2 class="text-center">Upload Results</h2>
+
+    <form method="post" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+
+        <!-- Display form errors -->
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                {% for errors in form.non_field_errors %}
+                <li>{{ errors }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Render form fields -->
+        <div class="mb-3">
+            {{ form.teacher_name.label_tag }}
+            {{ form.teacher_name }}
+            {% if form.teacher_name.errors %}
+            <small class="text-danger">{{ form.teacher_name.errors }}</small>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.Class.label_tag }}
+            {{ form.Class }}
+            {% if form.Class.errors %}
+            <small class="text-danger">{{ form.Class.errors }}</small>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.subject_name.label_tag }}
+            {{ form.subject_name }}
+            {% if form.subject_name.errors %}
+            <small class="text-danger">{{ form.subject_name.errors }}</small>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.subject_file.label_tag }}
+            {{ form.subject_file }}
+            {% if form.subject_file.errors %}
+            <small class="text-danger">{{ form.subject_file.errors }}</small>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+
+
+<!-- List of Already Uploaded Subjects -->
+<div class="container">
+    <h4 class="text-center">Uploaded Subjects</h4>
+    <div class="table-container d-flex justify-content-center">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Upload Date</th>
+                    <th>Action</th>
+                </tr> 
+            </thead>  
+            <tbody> 
+                {% for submitted_subjects in submitted_subject %}
+                <tr> 
+                    <td>{{ submitted_subjects.subject_name }}</td>
+                    <td >{{ submitted_subjects.uploaded_at }}</td> 
+                    <td ><a href="{% url 'delete_result' submitted_subjects.id %}" class="btn btn-danger"
+                        onclick=" return confirm('Are you sure you want to delete')">delete</a> </td>
+                </tr>   
+                {% empty %} 
+                <tr> 
+                    <td colspan="2" class="empty-message">
+                        No subjects have been uploaded yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

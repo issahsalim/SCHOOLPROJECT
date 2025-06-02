@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title%} announcement {%endblock%}
+ {% block content %}
+<div class="announcements-container">
+    {% for announcement in announcement %}
+    <div class="announcement card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="text-center fw-bold">{{announcement.title}}</h4>
+            <p class="announcement-message mb-2">{{ announcement.message }}</p>
+            <span class="announcement-date text-muted">{{ announcement.date }}</span>
+        </div>
+    </div>
+    {%empty%}
+    <div class="fs-4 d-flex justify-content-center mt-6">No Announcement given</div>
+    {% endfor %}
+</div>
+
+ <style>
+    .announcements-container {
+     max-width: 800px;
+     margin: 0 auto;
+     padding: 20px;
+ }
+
+ .announcement {
+     border-radius: 8px;
+     border: 1px solid #ddd;
+     background-color: #f9f9f9;
+     transition: box-shadow 0.3s ease;
+
+     &:hover {
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+     }
+ }
+ @media (max-width:900px) {
+    .announcements-container{
+        margin-top: 20%;
+    }
+ }
+
+ /* .announcement:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    } */
+
+ .announcement-message {
+     font-size: 1.1rem;
+     color: #333;
+ }
+
+ .announcement-date {
+     font-size: 0.9rem;
+     color: #888;
+     display: block;
+     margin-top: 10px;
+ }
+
+ 
+ </style>
+{% endblock %}

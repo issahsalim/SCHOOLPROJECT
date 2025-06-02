@@ -1,0 +1,77 @@
+{% extends '../base.html'%}
+{% block content %}
+
+<div class="container mt-5">
+    <!-- Error message --> 
+    {% if messages %}
+    {% for message in messages %}
+    <div class="d-flex justify-content-center mt-4 message">
+        <div class="alert alert-danger alert-dismissible fade show col-md-4" role="alert">
+            <strong class="text-center">{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endfor %}
+    {%endif%}
+
+    <!-- <div class="d-flex justify-content-center mt-4 message">
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger alert-dismissible fade show col-md-4" role="alert">
+            {% for error in form.non_field_errors %}
+            <li class=''>{{ error }}</li>
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%endif%}
+    </div> -->
+
+</div>
+
+<style>
+@media (max-width:678px) {
+    .login{
+        margin-top:20%;  
+    }
+}
+</style>
+
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg">
+            <div class="card-header text-center bg-primary text-white">
+                <h3>Teacher Login</h3>
+            </div>
+            <div class="card-body ">     
+                <form method="post" action="{% url 'teachers_login' %}">
+                    {% csrf_token %} 
+                    <!-- <div class="mb-3"> 
+                                <input type="text" name="username" id="" class="form-control" placeholder="username">
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" name="password" id="" class="form-control" placeholder="password"> 
+                            </div> -->
+
+                    {{form.as_p}}
+                    <div class="mb-4">
+                        <input type="checkbox" id="checkbox" class="form-check-input" id="password">
+                        <label for="checkbox">ShowPassword</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Log In</button>
+                </form>
+
+               
+            </div>
+            <div class="card-footer text-center">
+                <p>Don't have an account? <a href="{% url 'teachers_signup' %}" class="text-primary">Sign up
+                        here</a></p>
+            </div>
+            <div class="mb-3 mt-2 text-center ">
+                <a href="{% url 'password_reset' %} ">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{%endblock%}

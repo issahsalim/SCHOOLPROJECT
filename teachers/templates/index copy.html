@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Notification Demo</title>
+</head>
+<body>
+    <h1>Welcome to Our Site!</h1>
+    <p>Stay updated with the latest announcements by enabling notifications!</p>
+
+    <!-- Firebase SDK (CDN Version) -->
+    <script type="module">
+        // Import the necessary Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-messaging.js";
+
+        // Your Firebase configuration object (replace with your actual Firebase config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwRo82ymO1kf1EjH9h8S7tbjNcm2GBaNA",
+            authDomain: "notification-c0213.firebaseapp.com",
+            projectId: "notification-c0213",
+            storageBucket: "notification-c0213.firebasestorage.app",
+            messagingSenderId: "771506753450",
+            appId: "1:771506753450:web:386a45f2309767129f25d3",
+            measurementId: "G-3M07KSBFP6"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Initialize Firebase Messaging
+        const messaging = getMessaging(app);
+
+       
+        Notification.requestPermission().then((permission)=>{
+            if(permission==="granted"){
+                console.log("permission granted")
+
+                getToken(messaging,{
+                    vapidkey:''
+                }).then((tokencode)=>{
+                    if(tokencode){
+                        console.log("your code is", tokencode)
+
+                        fetch('save-token',{
+                            method:"POST",
+                            body: JSON.stringify({ "token" :tokencode}),
+                            headers:{
+                                "content-type":"application/json",
+                                "X-CSRFTOKEN":"{{csrf_token}}" 
+                             }
+                        })  
+
+                    }else{
+                        console.log('no code') 
+                    }
+                }).catch((error)=>{
+                    console.log(error)
+                }) 
+            }else{
+                console.log("access not granted")
+            } 
+        })
+
+    </script>
+</body>
+</html>

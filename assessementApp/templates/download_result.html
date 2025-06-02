@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Results</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px; 
+            text-align: left; 
+        }
+
+        th {
+            background-color: #f2f2f2;
+        } 
+        .name{
+            text-align: center; 
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="name">Index Number:  {{ student.username }}</h2>
+    <h2 class="name">Full Name:   {{ student.username.get_full_name }}</h2>
+    <h2 class="name">Class:   {{ student.username.Class}}</h2>
+    <table>  
+        <thead>  
+            <tr>  
+                <th>Subject</th>
+                <th>Marks</th>
+                <th>Grade</th>
+                <th>Term</th>
+                <th>Year</th>
+            </tr>
+        </thead> 
+        <tbody>  
+            {% for result in results %}
+            <tr>
+                <td>{{ result.subject }}</td>
+                <td>{{ result.marks }}</td>
+                <td>{{ result.grade }}</td>
+                <td>{{ result.term }}</td>
+                <td>{{ result.year }}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>

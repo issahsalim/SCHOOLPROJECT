@@ -1,0 +1,405 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block content %}
+
+
+<style>
+    .testimonial-card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .testimonial-card:hover {
+        transform: scale(1.02);
+    }
+
+    .testimonial-card img {
+        object-fit: cover;
+    }
+
+    .school-details {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .count {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    .letter {
+        font-size: 1.5rem;
+    }
+    .message{
+        transform: translateY(20px);
+    }
+
+    @media (max-width:678px) {
+        .welcome {
+            margin-top: 20%;
+            font-size: 1.2rem;
+        }
+
+        .letter {
+            font-size: 1rem;
+        }
+    }
+    
+</style>
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="d-flex justify-content-center mt-6 message">    
+    <div class="alert alert-primary alert-dismissible fade show col-md-4" role="alert">
+        <strong class="text-center">{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+{% endfor %}
+{%endif%}
+
+
+<!-- Main Content -->
+<h2 class="p-4 text-center welcome fw-bold"  >You are Welcome To Royal School {%if request.user.is_authenticated %} ,{{request.user.get}}{%endif%} </h2>
+
+<!-- Carousel -->
+<div class="mb-3"> 
+    <div id="autoImageCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/image1.jpg' %}" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/image2.jpg' %}" class="d-block w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/image3.jpg' %}" class="d-block w-100" alt="Slide 3">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- LETTER -->
+<div class="container letter">
+    <b>Dear Parent,</b><br />
+    Due to how we have concise about your children's and their future we have designed this app to make it easier
+    for you to stay connected with your child, {{request.user.get_full_name}} in school. With this app, you can now:<br>
+    <b> Report any issues</b>, such as if {%if request.user.is_authenticated %} {{request.user.get_full_name}} {%else%} your child{%endif%} is sick.You can simply fill out a form, and the headmaster will be
+    notify immediately after submission and a necessary action will be taken<br />
+    <b> Connect with {{request.user.get_full_name}} class teacher</b> easily. The app has a page with a list of all classes and their
+    teachers. 
+    <b>Receive important announcements</b>, such as PTA meetings and other school updates, directly through the app.
+    We believe this app will help improve communication and support your child {{request.get_full_name}} education.
+
+    Thank you for being a part of our school community!<br /><br />
+    Warm regards,<br />
+    <b>Royal COMMUNITY BOARDING SCHOOL </b>
+</div>
+
+<style>
+    .carousel-item img {
+        object-fit: cover;
+        background-size: cover;
+        width: 100%;
+        height: 20rem;
+
+    }
+    @media (max-width:678px) {
+        .carousel-item img {
+        object-fit: cover;
+        background-size: cover;
+        width: 100%;
+        height: 10rem;
+    }
+    .currentstudent{
+        margin-top: 10%;
+    }
+    }
+</style>
+
+
+<!-- Testimonials Section -->
+<div class="container mt-5 mb-5">
+    <h2 class="text-center mb-4 fs-2 fw-bold ">What Our Students Say</h2>
+    <div class="row">
+        <!-- Old Students -->
+        <div class="col-md-6 mb-6">
+            <h3 class="d-flex justify-content-center" style="color: rgb(90, 17, 158);">Past Students</h3>
+            <div class="testimonial-card border p-3 rounded mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <img src="{% static 'images/k.jpg' %}" alt="John Doe" class="rounded-circle" width="60"
+                            height="60">
+                    </div> 
+                    <div> 
+                        <h5 class="mb-0">Clement</h5>
+                        <small class="text-muted">Software Engineer at Google</small>
+                    </div>
+                </div>
+                <p class="mt-3">"This school laid the foundation for my career. The teachers were exceptional and
+                    nurturing."</p>
+            </div>
+
+            <div class="testimonial-card border p-3 rounded mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <img src="{% static 'images/mogabe.jpg' %}" alt="mogabe" class="rounded-circle" width="60"
+                            height="60">
+                    </div>
+                    <div>
+                        <h5 class="mb-0">Issah Sadat</h5>
+                        <small class="text-muted">Doctor at City Hospital</small>
+                    </div>
+                </div>
+                <p class="mt-3">"The supportive environment and excellent education shaped who I am today."</p>
+            </div>
+        </div>
+
+        <!-- Current Students -->
+        <div class="col-md-6 currentstudent">
+            <h3 class="d-flex justify-content-center" style="color:rgb(122, 27, 211)">Current Students</h3>
+            <div class="testimonial-card border p-3 rounded mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <img src="{% static 'images/1.png' %}" alt="clement" class="rounded-circle" width="60"
+                            height="60">
+                    </div>
+                    <div>
+                        <h5 class="mb-0">Ziro</h5>
+                        <small class="text-muted">Grade 6</small>
+                    </div>
+                </div>
+                <p class="mt-3">"I love the interactive learning and extracurricular activities. It's fun and
+                    educational."</p>
+            </div>
+
+            <div class="testimonial-card border p-3 rounded mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <img src="{% static 'images/b1.jpg' %}" alt="Michael Brown" class="rounded-circle" width="60"
+                            height="60">
+                    </div>
+                    <div>
+                        <h5 class="mb-0">Michael Brown</h5>
+                        <small class="text-muted">Grade 5</small>
+                    </div>
+                </div>
+                <p class="mt-3">"Our teachers make learning exciting, and the school environment feels like a second
+                    home."</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="d-flex justify-content-center fs-2 fw-bold ">
+    <u>What we offer you digitally</u>
+</div><!-- Section Cards -->
+<div class="container mb-5 ">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Announcements</h5>
+                    <p class="card-text"> Here, you can view any announcements. Simply click the button below that says
+                        View Announcements, and you will be able
+                        to see all the updates.</p>
+                    <a href="{% url 'announcement' %}" class="btn rounded-pill" id="btns"
+                        style="background-color: blueviolet;">View Announcements</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Report Issue</h5>
+                    <p class="card-text"> Report any issue by simply clicking the button that says report issue and a
+                        form will be render for you to fil</p>
+                    <a href="{% url 'absence' %}" class="btn rounded-pill" id="btns"
+                        style="background-color: blueviolet;">Report Issue</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Staffs</h5>
+                    <p class="card-text"> Click the button below that says Staffs to see all the classes and their form
+                        masters </p>
+                    <a href="{% url 'form_teachers'  %}" class="btn rounded-pill" id="btns"
+                        style="background-color: blueviolet;">Staffs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details -->
+
+<style>
+    .innercontrol {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        justify-items: center;
+
+    }
+
+    @media (max-width:800px) {
+        .innercontrol {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            justify-items: center;
+        }
+
+
+    }
+</style>
+
+<h4 class="text-center mt-6 fw-bold about" id="ABOUT">ABOUT US</h4> 
+<section class="school-details container mb-5" style="background-color: rgb(122, 38, 201); padding: 40px;">
+    <div class="innercontrol">
+        <div class="all_staff">
+            <div class="innermaster">
+                <i class="fa-solid fa-chalkboard-user" style="font-size: 4rem;"></i>
+                <div class="card-body mt-2 fw-bold fs-3">
+                    <span class="count" data-count="20">0+</span>
+                    <p>Teachers</p>
+                </div>
+            </div>
+        </div>
+        <div class="allstu">
+            <div class="innermaster">
+                <img src="{% static 'images/student.png' %}" alt="" width="70" height="70">
+                <div class="card-body mt-2 fw-bold fs-3">
+                    <span class="count" data-count="500">0</span>
+                    <p>Students</p>
+                </div>
+            </div>
+        </div>
+        <div class="callrooms">
+            <div class="innermaster">
+                <i class="fa-solid fa-school" style="font-size: 4rem;"></i>
+                <div class="card-body mt-2 fw-bold fs-3">
+                    <span class="count" data-count="40">0</span>
+                    <p>Call Rooms</p>
+                </div>
+            </div>
+        </div>
+        <div class="activities">
+            <div class="innermaster">
+                <img src="{% static 'images/activity.png' %}" alt="" width="60" height="60">
+                <div class="card-body mt-2 fw-bold fs-3">
+                    <span class="count" data-count="20">0</span>
+                    <p>Activities</p>
+                </div>
+            </div>
+        </div>
+        <div class="graduate">
+            <div class="innermaster">
+                <i class="fa-solid fa-user-graduate" style="font-size: 4rem;"></i>
+                <div class="card-body mt-2 fw-bold fs-3">
+                    <span class="count" data-count="1000">0</span>
+                    <p>Graduates</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- MAP -->
+<div class="d-flex justify-content-center fs-2 fw-bold p-3 mb-4">
+    Where you can find us globally
+</div>
+<div class="d-flex justify-content-center mb-4" style="max-width: 100%;">
+<iframe
+    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3948.7436670697252!2d-0.6456506!3d8.2285121!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfd709b4008bdb17%3A0xfade254276b324e4!2sRoyal%20Edu.%20Complex!5e0!3m2!1sen!2sgh!4v1733778042818!5m2!1sen!2sgh"
+    width="1000" height="350" style="border:0;" allowfullscreen="" loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+
+
+<!-- footer section  -->
+
+<div class="card mt-3  cars" style="background-color: blueviolet; color: white;"> 
+    <!-- <div class="card-header">
+        <marquee behavior="" direction="">I AM THE ISSAH ABDUL-SALIM BORESA </marquee>
+    </div> --> 
+    <div class="card-body footer">
+
+     
+        <!-- FOOTER  FOLLOW-->
+        <div class="footer-solink ">
+            <h5 class="fw-bold">FOLLOW US</h5>
+            <div class="images footer-img">
+                <a href="" class="text-black "><i class="fa-brands fa-facebook"></i></a>
+
+                <a href="https://shorturl.at/cioy5" class="text-black"><i class="fa-brands fa-youtube"></i> </a>
+
+                <a href="" class="text-black"><i class="fa-brands fa-square-x-twitter "></i></a>
+
+                <a href="" class="text-black"><i class="fa-brands fa-square-instagram"></i> </a>
+            </div>
+        </div>
+
+
+        <!-- FOOTER BASIC INFO  -->
+        <div class="footer-about">
+            <h5 class="fw-bold">Basic info</h5>
+            <div class="footer-services">
+                <a href="#service" class="footerbasic">service</a>
+                <a href="#CONTACT" class="footerbasic">Contact</a>
+                <a href="#ABOUT" class="footerbasic">About Us</a>
+            </div>
+        </div>
+
+        <!-- FOOTER EVENT -->
+        <div class="footer-event">
+            <h5 class="fw-bold">Special Programs</h5> 
+            <div class="footer-event-links text-center" style="white-space: nowrap;">
+                <a href="" class="footerevent">Biology</a>
+                <a href="" class="footerevent">Agriculture</a>
+                <a href="" class="footerevent">Government</a>
+            </div>
+        </div>
+    </div> 
+    
+    <hr> 
+    <div class="footer-legal text-center m-3">
+        <p style="white-space: nowrap;">© 2024 Royal jhs. All Rights Reserved.</p>
+        <span>Phone: +233 456 7890 | Email: info@juniorschool.com</span>
+    </div>
+</div> 
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const counters = document.querySelectorAll('.count');
+
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const count = parseInt(counter.innerText);
+                const increment = Math.ceil(target / 100);
+
+                if (count < target) {
+                    counter.innerText = count + increment
+                    setTimeout(updateCount, 100);
+                } else {
+                    counter.innerText = target + "+";
+                }
+            };
+            updateCount();
+        });
+
+      
+    });
+</script>
+{% endblock %}

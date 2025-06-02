@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+
+<div class="d-flex justify-content-center mt-2">
+    {% for message in messages %}
+    <div class="alert alert-secondary alert-dismissible fade show col-6 text-white text-center fs-4" role="alert">
+        <span>{{ message }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+ 
+<div id="featureCarousel" class="carousel slide mt-4" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="0" class="active" aria-current="true"
+            aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://via.placeholder.com/1200x400/007bff/ffffff?text=Assess+Student+Performance"
+                class="d-block w-100" alt="Assess Student Performance">
+            <div class="carousel-caption d-none d-md-block">
+                <h5 class="display-6">Assess Student Performance</h5>
+                <p>Evaluate and manage assessments effortlessly.</p>
+            </div>
+        </div>   
+        <div class="carousel-item">
+            <img src="https://via.placeholder.com/1200x400/6c757d/ffffff?text=Detailed+Results" class="d-block w-100"
+                alt="Detailed Results">
+            <div class="carousel-caption d-none d-md-block">
+                <h5 class="display-6">Detailed Results</h5>
+                <p>Get accurate and comprehensive assessment results.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://via.placeholder.com/1200x400/28a745/ffffff?text=Easy+Grading+System" class="d-block w-100"
+                alt="Easy Grading System">
+            <div class="carousel-caption d-none d-md-block">
+                <h5 class="display-6">Easy Grading System</h5>
+                <p>Simplify the grading process with our app.</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#featureCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#featureCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<div class="header mt-4 mb-4 text-center">
+    {% if request.user.is_authenticated %}
+    <h1 class="display-4">{{ request.user.first_name }}, Welcome to the ITB Assessment App</h1>
+    <p class="lead">Manage and assess student performance with ease.</p>
+    {% else %}
+    <h1 class="display-4">Welcome to the ITB Assessment App</h1>
+    <p class="lead">Manage and assess student performance with ease.</p>
+    {% endif %}
+</div>
+
+<div class="info-section mt-4 mb-4">
+    <h4 class="text-center mb-4">App Features</h4>
+    <div class="feature-list">
+        <div class="feature-item">
+            <div class="feature-text">
+                <h5 class="feature-title">Assessment Result</h5>
+                <p>View your individual assessment results with detailed feedback. Note: You can only see your own
+                    results, not others'.</p>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-text">
+                <h5 class="feature-title">Announcement</h5>
+                <p>Stay updated with the latest announcements relevant to your assessments and academic activities.</p>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-text">
+                <h5 class="feature-title">Report Absence</h5>
+                <p>Easily report your absence and keep track of your attendance records.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+<style>
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .header {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-section {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #007bff;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% endblock %}
