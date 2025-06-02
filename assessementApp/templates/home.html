@@ -1,405 +1,718 @@
 {% extends 'base.html' %}
-{%load static %}
+{% load static %}
+
 {% block content %}
 
-
 <style>
+    :root {
+        --primary: #7a26c9;
+        --primary-light: #9c5ddb;
+        --secondary: #5a189a;
+        --dark: #1a1a2e;
+        --light: #f8f9fa;
+        --gray: #6c757d;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* Welcome Section */
+    .welcome-section {
+        background: linear-gradient(135deg, rgba(122, 38, 201, 0.1) 0%, rgba(154, 90, 219, 0.05) 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .welcome-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "images/pattern.png" %}') repeat;
+        opacity: 0.05;
+        z-index: -1;
+    }
+
+    .welcome-heading {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    /* Carousel */
+    .hero-carousel {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        margin: 2rem auto;
+        max-width: 1200px;
+    }
+
+    .carousel-item img {
+        height: 500px;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 8px;
+        padding: 1.5rem;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+    }
+
+    /* Letter Section */
+    .letter-section {
+        background: white;
+        border-radius: 16px;
+        padding: 3rem;
+        margin: 4rem auto;
+        box-shadow: var(--shadow);
+        max-width: 1000px;
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .letter-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 8px;
+        height: 100%;
+        background: linear-gradient(to bottom, var(--primary), var(--primary-light));
+    }
+
+    .letter-heading {
+        font-size: 1.8rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+
+    .letter-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--dark);
+    }
+
+    /* Testimonials */
+    .testimonials-section {
+        padding: 4rem 0;
+        background: linear-gradient(135deg, #f9f5ff 0%, #f0e6ff 100%);
+    }
+
+    .section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 3rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, var(--primary), var(--primary-light));
+        border-radius: 2px;
+    }
+
     .testimonial-card {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        height: 100%;
+        position: relative;
+        overflow: hidden;
     }
 
     .testimonial-card:hover {
-        transform: scale(1.02);
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(122, 38, 201, 0.2);
     }
 
-    .testimonial-card img {
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-size: 5rem;
+        color: rgba(122, 38, 201, 0.1);
+        font-family: serif;
+        line-height: 1;
+    }
+
+    .testimonial-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
         object-fit: cover;
+        border: 3px solid var(--primary-light);
+        margin-right: 1.5rem;
     }
 
-    .school-details {
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .testimonial-name {
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 0.2rem;
     }
 
-    .count {
-        font-size: 1.5em;
-        font-weight: bold;
+    .testimonial-role {
+        color: var(--gray);
+        font-size: 0.9rem;
     }
 
-    .letter {
-        font-size: 1.5rem;
+    .testimonial-text {
+        margin-top: 1.5rem;
+        font-style: italic;
+        color: var(--dark);
     }
-    .message{
-        transform: translateY(20px);
+
+    /* Features Section */
+    .features-section {
+        padding: 4rem 0;
     }
 
-    @media (max-width:678px) {
-        .welcome {
-            margin-top: 20%;
-            font-size: 1.2rem;
-        }
-
-        .letter {
-            font-size: 1rem;
-        }
+    .feature-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        height: 100%;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        text-align: center;
+        border-top: 4px solid var(--primary);
     }
-    
-</style>
 
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(122, 38, 201, 0.15);
+    }
 
-{% if messages %}
-{% for message in messages %}
-<div class="d-flex justify-content-center mt-6 message">    
-    <div class="alert alert-primary alert-dismissible fade show col-md-4" role="alert">
-        <strong class="text-center">{{message}}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-</div>
-{% endfor %}
-{%endif%}
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+    }
 
+    .feature-title {
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 1rem;
+    }
 
-<!-- Main Content -->
-<h2 class="p-4 text-center welcome fw-bold"  >You are Welcome To Royal School {%if request.user.is_authenticated %} ,{{request.user.get}}{%endif%} </h2>
+    .feature-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        transition: var(--transition);
+        margin-top: 1rem;
+    }
 
-<!-- Carousel -->
-<div class="mb-3"> 
-    <div id="autoImageCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="3000">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{% static 'images/image1.jpg' %}" class="d-block w-100" alt="Slide 1">
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'images/image2.jpg' %}" class="d-block w-100" alt="Slide 2">
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'images/image3.jpg' %}" class="d-block w-100" alt="Slide 3">
-            </div>
-        </div>
-    </div>
-</div>
+    .feature-btn:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(122, 38, 201, 0.3);
+    }
 
+    /* Stats Section */
+    .stats-section {
+        background: var(--primary);
+        padding: 4rem 0;
+        position: relative;
+        overflow: hidden;
+    }
 
-<!-- LETTER -->
-<div class="container letter">
-    <b>Dear Parent,</b><br />
-    Due to how we have concise about your children's and their future we have designed this app to make it easier
-    for you to stay connected with your child, {{request.user.get_full_name}} in school. With this app, you can now:<br>
-    <b> Report any issues</b>, such as if {%if request.user.is_authenticated %} {{request.user.get_full_name}} {%else%} your child{%endif%} is sick.You can simply fill out a form, and the headmaster will be
-    notify immediately after submission and a necessary action will be taken<br />
-    <b> Connect with {{request.user.get_full_name}} class teacher</b> easily. The app has a page with a list of all classes and their
-    teachers. 
-    <b>Receive important announcements</b>, such as PTA meetings and other school updates, directly through the app.
-    We believe this app will help improve communication and support your child {{request.get_full_name}} education.
-
-    Thank you for being a part of our school community!<br /><br />
-    Warm regards,<br />
-    <b>Royal COMMUNITY BOARDING SCHOOL </b>
-</div>
-
-<style>
-    .carousel-item img {
-        object-fit: cover;
-        background-size: cover;
+    .stats-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: 20rem;
-
+        height: 100%;
+        background: url('{% static "images/pattern2.png" %}') repeat;
+        opacity: 0.1;
+        z-index: 0;
     }
-    @media (max-width:678px) {
+
+    .stat-item {
+        text-align: center;
+        color: white;
+        position: relative;
+        z-index: 1;
+        padding: 1.5rem;
+    }
+
+    .stat-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .stat-count {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+    /* Map Section */
+    .map-section {
+        padding: 4rem 0;
+        background: white;
+    }
+
+    .map-container {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        height: 400px;
+    }
+
+    /* Footer */
+    .footer {
+        background: var(--dark);
+        color: white;
+        padding: 4rem 0 2rem;
+    }
+
+    .footer-title {
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: white;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .footer-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: var(--primary-light);
+    }
+
+    .footer-link {
+        color: rgba(255, 255, 255, 0.7);
+        display: block;
+        margin-bottom: 0.8rem;
+        transition: var(--transition);
+        text-decoration: none;
+    }
+
+    .footer-link:hover {
+        color: white;
+        transform: translateX(5px);
+    }
+
+    .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        margin-right: 10px;
+        transition: var(--transition);
+    }
+
+    .social-icon:hover {
+        background: var(--primary);
+        transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        margin-top: 3rem;
+        text-align: center;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes countUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
         .carousel-item img {
-        object-fit: cover;
-        background-size: cover;
-        width: 100%;
-        height: 10rem;
-    }
-    .currentstudent{
-        margin-top: 10%;
-    }
-    }
-</style>
-
-
-<!-- Testimonials Section -->
-<div class="container mt-5 mb-5">
-    <h2 class="text-center mb-4 fs-2 fw-bold ">What Our Students Say</h2>
-    <div class="row">
-        <!-- Old Students -->
-        <div class="col-md-6 mb-6">
-            <h3 class="d-flex justify-content-center" style="color: rgb(90, 17, 158);">Past Students</h3>
-            <div class="testimonial-card border p-3 rounded mb-3">
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <img src="{% static 'images/k.jpg' %}" alt="John Doe" class="rounded-circle" width="60"
-                            height="60">
-                    </div> 
-                    <div> 
-                        <h5 class="mb-0">Clement</h5>
-                        <small class="text-muted">Software Engineer at Google</small>
-                    </div>
-                </div>
-                <p class="mt-3">"This school laid the foundation for my career. The teachers were exceptional and
-                    nurturing."</p>
-            </div>
-
-            <div class="testimonial-card border p-3 rounded mb-3">
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <img src="{% static 'images/mogabe.jpg' %}" alt="mogabe" class="rounded-circle" width="60"
-                            height="60">
-                    </div>
-                    <div>
-                        <h5 class="mb-0">Issah Sadat</h5>
-                        <small class="text-muted">Doctor at City Hospital</small>
-                    </div>
-                </div>
-                <p class="mt-3">"The supportive environment and excellent education shaped who I am today."</p>
-            </div>
-        </div>
-
-        <!-- Current Students -->
-        <div class="col-md-6 currentstudent">
-            <h3 class="d-flex justify-content-center" style="color:rgb(122, 27, 211)">Current Students</h3>
-            <div class="testimonial-card border p-3 rounded mb-3">
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <img src="{% static 'images/1.png' %}" alt="clement" class="rounded-circle" width="60"
-                            height="60">
-                    </div>
-                    <div>
-                        <h5 class="mb-0">Ziro</h5>
-                        <small class="text-muted">Grade 6</small>
-                    </div>
-                </div>
-                <p class="mt-3">"I love the interactive learning and extracurricular activities. It's fun and
-                    educational."</p>
-            </div>
-
-            <div class="testimonial-card border p-3 rounded mb-3">
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <img src="{% static 'images/b1.jpg' %}" alt="Michael Brown" class="rounded-circle" width="60"
-                            height="60">
-                    </div>
-                    <div>
-                        <h5 class="mb-0">Michael Brown</h5>
-                        <small class="text-muted">Grade 5</small>
-                    </div>
-                </div>
-                <p class="mt-3">"Our teachers make learning exciting, and the school environment feels like a second
-                    home."</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="d-flex justify-content-center fs-2 fw-bold ">
-    <u>What we offer you digitally</u>
-</div><!-- Section Cards -->
-<div class="container mb-5 ">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-3">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Announcements</h5>
-                    <p class="card-text"> Here, you can view any announcements. Simply click the button below that says
-                        View Announcements, and you will be able
-                        to see all the updates.</p>
-                    <a href="{% url 'announcement' %}" class="btn rounded-pill" id="btns"
-                        style="background-color: blueviolet;">View Announcements</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-3">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Report Issue</h5>
-                    <p class="card-text"> Report any issue by simply clicking the button that says report issue and a
-                        form will be render for you to fil</p>
-                    <a href="{% url 'absence' %}" class="btn rounded-pill" id="btns"
-                        style="background-color: blueviolet;">Report Issue</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-3">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Staffs</h5>
-                    <p class="card-text"> Click the button below that says Staffs to see all the classes and their form
-                        masters </p>
-                    <a href="{% url 'form_teachers'  %}" class="btn rounded-pill" id="btns"
-                        style="background-color: blueviolet;">Staffs</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Details -->
-
-<style>
-    .innercontrol {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        justify-items: center;
-
-    }
-
-    @media (max-width:800px) {
-        .innercontrol {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 10px;
-            justify-items: center;
+            height: 400px;
         }
+    }
 
+    @media (max-width: 768px) {
+        .welcome-heading {
+            font-size: 2rem;
+        }
+        
+        .carousel-item img {
+            height: 300px;
+        }
+        
+        .letter-section {
+            padding: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+        }
+    }
 
+    @media (max-width: 576px) {
+        .carousel-item img {
+            height: 250px;
+        }
+        
+        .carousel-caption {
+            width: 90%;
+            padding: 1rem;
+        }
+        
+        .testimonial-card {
+            padding: 1.5rem;
+        }
     }
 </style>
 
-<h4 class="text-center mt-6 fw-bold about" id="ABOUT">ABOUT US</h4> 
-<section class="school-details container mb-5" style="background-color: rgb(122, 38, 201); padding: 40px;">
-    <div class="innercontrol">
-        <div class="all_staff">
-            <div class="innermaster">
-                <i class="fa-solid fa-chalkboard-user" style="font-size: 4rem;"></i>
-                <div class="card-body mt-2 fw-bold fs-3">
-                    <span class="count" data-count="20">0+</span>
-                    <p>Teachers</p>
-                </div>
-            </div>
+<!-- Welcome Section -->
+<section class="welcome-section">
+    <div class="container text-center">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary alert-dismissible fade show col-md-6 mx-auto" role="alert">
+            <strong class="text-center">{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="allstu">
-            <div class="innermaster">
-                <img src="{% static 'images/student.png' %}" alt="" width="70" height="70">
-                <div class="card-body mt-2 fw-bold fs-3">
-                    <span class="count" data-count="500">0</span>
-                    <p>Students</p>
-                </div>
-            </div>
-        </div>
-        <div class="callrooms">
-            <div class="innermaster">
-                <i class="fa-solid fa-school" style="font-size: 4rem;"></i>
-                <div class="card-body mt-2 fw-bold fs-3">
-                    <span class="count" data-count="40">0</span>
-                    <p>Call Rooms</p>
-                </div>
-            </div>
-        </div>
-        <div class="activities">
-            <div class="innermaster">
-                <img src="{% static 'images/activity.png' %}" alt="" width="60" height="60">
-                <div class="card-body mt-2 fw-bold fs-3">
-                    <span class="count" data-count="20">0</span>
-                    <p>Activities</p>
-                </div>
-            </div>
-        </div>
-        <div class="graduate">
-            <div class="innermaster">
-                <i class="fa-solid fa-user-graduate" style="font-size: 4rem;"></i>
-                <div class="card-body mt-2 fw-bold fs-3">
-                    <span class="count" data-count="1000">0</span>
-                    <p>Graduates</p>
-                </div>
-            </div>
-        </div>
-
+        {% endfor %}
+        {% endif %}
+        
+        <h1 class="welcome-heading">Welcome To Royal School {% if request.user.is_authenticated %}, {{request.user.get_full_name}}{% endif %}</h1>
+        <p class="lead">Excellence in Education Since 1995</p>
     </div>
 </section>
 
-
-<!-- MAP -->
-<div class="d-flex justify-content-center fs-2 fw-bold p-3 mb-4">
-    Where you can find us globally
-</div>
-<div class="d-flex justify-content-center mb-4" style="max-width: 100%;">
-<iframe
-    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3948.7436670697252!2d-0.6456506!3d8.2285121!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfd709b4008bdb17%3A0xfade254276b324e4!2sRoyal%20Edu.%20Complex!5e0!3m2!1sen!2sgh!4v1733778042818!5m2!1sen!2sgh"
-    width="1000" height="350" style="border:0;" allowfullscreen="" loading="lazy"
-    referrerpolicy="no-referrer-when-downgrade"></iframe>
-</div>
-
-
-
-<!-- footer section  -->
-
-<div class="card mt-3  cars" style="background-color: blueviolet; color: white;"> 
-    <!-- <div class="card-header">
-        <marquee behavior="" direction="">I AM THE ISSAH ABDUL-SALIM BORESA </marquee>
-    </div> --> 
-    <div class="card-body footer">
-
-     
-        <!-- FOOTER  FOLLOW-->
-        <div class="footer-solink ">
-            <h5 class="fw-bold">FOLLOW US</h5>
-            <div class="images footer-img">
-                <a href="" class="text-black "><i class="fa-brands fa-facebook"></i></a>
-
-                <a href="https://shorturl.at/cioy5" class="text-black"><i class="fa-brands fa-youtube"></i> </a>
-
-                <a href="" class="text-black"><i class="fa-brands fa-square-x-twitter "></i></a>
-
-                <a href="" class="text-black"><i class="fa-brands fa-square-instagram"></i> </a>
+<!-- Hero Carousel -->
+<div class="container">
+    <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/image1.jpg' %}" class="d-block w-100" alt="School Building">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Our State-of-the-Art Campus</h5>
+                    <p>Modern facilities designed for optimal learning</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/image2.jpg' %}" class="d-block w-100" alt="Students Learning">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Interactive Learning Environment</h5>
+                    <p>Where students thrive academically and socially</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/image3.jpg' %}" class="d-block w-100" alt="Graduation">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Celebrating Achievements</h5>
+                    <p>Our graduates go on to prestigious universities</p>
+                </div>
             </div>
         </div>
-
-
-        <!-- FOOTER BASIC INFO  -->
-        <div class="footer-about">
-            <h5 class="fw-bold">Basic info</h5>
-            <div class="footer-services">
-                <a href="#service" class="footerbasic">service</a>
-                <a href="#CONTACT" class="footerbasic">Contact</a>
-                <a href="#ABOUT" class="footerbasic">About Us</a>
-            </div>
-        </div>
-
-        <!-- FOOTER EVENT -->
-        <div class="footer-event">
-            <h5 class="fw-bold">Special Programs</h5> 
-            <div class="footer-event-links text-center" style="white-space: nowrap;">
-                <a href="" class="footerevent">Biology</a>
-                <a href="" class="footerevent">Agriculture</a>
-                <a href="" class="footerevent">Government</a>
-            </div>
-        </div>
-    </div> 
-    
-    <hr> 
-    <div class="footer-legal text-center m-3">
-        <p style="white-space: nowrap;">© 2024 Royal jhs. All Rights Reserved.</p>
-        <span>Phone: +233 456 7890 | Email: info@juniorschool.com</span>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-</div> 
+</div>
 
+<!-- Letter Section -->
+<section class="letter-section">
+    <h2 class="letter-heading">Dear Parent,</h2>
+    <div class="letter-content">
+        <p>At Royal Community Boarding School, we are committed to providing the highest quality education for your child. We've developed this digital platform to strengthen the connection between school and home, ensuring you're always informed and engaged with your child's education.</p>
+        
+        <p>Through this platform, you can:</p>
+        
+        <ul>
+            <li><strong>Report any issues</strong> - If {% if request.user.is_authenticated %}{{request.user.get_full_name}}{% else %}your child{% endif %} is unwell or facing any challenges, simply complete our online form and our headmaster will be notified immediately for prompt action.</li>
+            <li><strong>Connect with teachers</strong> - Easily communicate with {% if request.user.is_authenticated %}{{request.user.get_full_name}}{% else %}your child{% endif %}'s class teacher through our dedicated staff directory.</li>
+            <li><strong>Stay informed</strong> - Receive important announcements about PTA meetings, school events, and academic updates directly through the platform.</li>
+        </ul>
+        
+        <p>We believe this digital initiative will enhance communication and support your child's educational journey at Royal Community Boarding School.</p>
+        
+        <p>Thank you for entrusting us with your child's education. Together, we can build a bright future.</p>
+        
+        <p class="mt-4"><strong>Warm regards,</strong><br>
+        Royal Community Boarding School</p>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container">
+        <h2 class="section-title">What Our Community Says</h2>
+        
+        <div class="row g-4">
+            <!-- Alumni Testimonials -->
+            <div class="col-lg-6">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center">
+                        <img src="{% static 'images/k.jpg' %}" alt="Clement" class="testimonial-img">
+                        <div>
+                            <h5 class="testimonial-name">Clement</h5>
+                            <p class="testimonial-role">Software Engineer at Google</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Royal School provided me with more than just an education - it gave me the foundation for critical thinking and problem solving that I use every day in my career at Google. The teachers went above and beyond to nurture our talents."</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center">
+                        <img src="{% static 'images/mogabe.jpg' %}" alt="Issah Sadat" class="testimonial-img">
+                        <div>
+                            <h5 class="testimonial-name">Issah Sadat</h5>
+                            <p class="testimonial-role">Doctor at City Hospital</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The rigorous science program at Royal School prepared me exceptionally well for medical school. The supportive environment and mentorship from teachers shaped not just my academic path but my approach to patient care."</p>
+                </div>
+            </div>
+            
+            <!-- Current Students -->
+            <div class="col-lg-6">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center">
+                        <img src="{% static 'images/1.png' %}" alt="Ziro" class="testimonial-img">
+                        <div>
+                            <h5 class="testimonial-name">Ziro</h5>
+                            <p class="testimonial-role">Grade 6 Student</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"I love coming to school every day! The teachers make learning fun with interactive lessons, and there are so many clubs to join. My favorite is the robotics club where we get to build and program our own robots."</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center">
+                        <img src="{% static 'images/b1.jpg' %}" alt="Michael Brown" class="testimonial-img">
+                        <div>
+                            <h5 class="testimonial-name">Michael Brown</h5>
+                            <p class="testimonial-role">Grade 5 Student</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"What I love most about Royal School is how the teachers care about each student. They know when to challenge us and when to offer help. The school feels like a second home where I can explore my interests in science and art."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Digital Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">Our Digital Services</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3 class="feature-title">Announcements</h3>
+                    <p>Stay updated with all school news, events, and important notices through our announcements portal.</p>
+                    <a href="{% url 'announcement' %}" class="btn feature-btn">View Announcements</a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <h3 class="feature-title">Report Issues</h3>
+                    <p>Quickly report any concerns about your child's health, wellbeing, or academic progress.</p>
+                    <a href="{% url 'absence' %}" class="btn feature-btn">Report an Issue</a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3 class="feature-title">Staff Directory</h3>
+                    <p>Access contact information for all teaching staff and administrative personnel.</p>
+                    <a href="{% url 'form_teachers' %}" class="btn feature-btn">View Staff</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 col-6 stat-item">
+                <i class="fas fa-chalkboard-user stat-icon"></i>
+                <div class="stat-count" data-count="20">0</div>
+                <div class="stat-label">Qualified Teachers</div>
+            </div>
+            
+            <div class="col-md-4 col-6 stat-item">
+                <i class="fas fa-user-graduate stat-icon"></i>
+                <div class="stat-count" data-count="500">0</div>
+                <div class="stat-label">Current Students</div>
+            </div>
+            
+            <div class="col-md-4 col-6 stat-item">
+                <i class="fas fa-school stat-icon"></i>
+                <div class="stat-count" data-count="40">0</div>
+                <div class="stat-label">Classrooms</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section">
+    <div class="container">
+        <h2 class="section-title">Visit Our Campus</h2>
+        
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3948.7436670697252!2d-0.6456506!3d8.2285121!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfd709b4008bdb17%3A0xfade254276b324e4!2sRoyal%20Edu.%20Complex!5e0!3m2!1sen!2sgh!4v1733778042818!5m2!1sen!2sgh" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <h3 class="footer-title">Royal Community School</h3>
+                <p>Providing quality education since 1995. Our mission is to nurture well-rounded individuals prepared for the challenges of tomorrow.</p>
+                
+                <div class="mt-4">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://shorturl.at/cioy5" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <h3 class="footer-title">Quick Links</h3>
+                <a href="#about" class="footer-link">About Us</a>
+                <a href="#contact" class="footer-link">Contact</a>
+                <a href="#services" class="footer-link">Services</a>
+                <a href="{% url 'announcement' %}" class="footer-link">Announcements</a>
+                <a href="{% url 'form_teachers' %}" class="footer-link">Staff Directory</a>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <h3 class="footer-title">Academic Programs</h3>
+                <a href="#" class="footer-link">Science Department</a>
+                <a href="#" class="footer-link">Arts Department</a>
+                <a href="#" class="footer-link">Vocational Training</a>
+                <a href="#" class="footer-link">Sports Academy</a>
+                <a href="#" class="footer-link">Extracurricular Activities</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Royal Community Boarding School. All Rights Reserved.</p>
+            <p>Phone: +233 456 7890 | Email: info@royalschool.edu.gh</p>
+        </div>
+    </div>
+</footer>
 
 <script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const counters = document.querySelectorAll('.count');
-
-        counters.forEach(counter => {
-            const updateCount = () => {
-                const target = parseInt(counter.getAttribute('data-count'));
-                const count = parseInt(counter.innerText);
-                const increment = Math.ceil(target / 100);
-
+    // Animated counter
+    document.addEventListener("DOMContentLoaded", function() {
+        const counters = document.querySelectorAll('.stat-count');
+        const speed = 200;
+        
+        function animateCounters() {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-count');
+                const count = +counter.innerText;
+                const increment = target / speed;
+                
                 if (count < target) {
-                    counter.innerText = count + increment
-                    setTimeout(updateCount, 100);
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(animateCounters, 1);
                 } else {
-                    counter.innerText = target + "+";
+                    counter.innerText = target;
                 }
-            };
-            updateCount();
+            });
+        }
+        
+        // Start animation when stats section is in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('.stat-item').forEach(item => {
+            observer.observe(item);
         });
-
-      
     });
 </script>
+
 {% endblock %}

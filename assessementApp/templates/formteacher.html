@@ -1,161 +1,377 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Staff Directory{% endblock %}
 
-{%load static %}
-{% block title %} Staffs {%endblock%}
-{%block content %}
+{% block content %}
 <style>
-    body {
-        overflow-x: hidden;
+    :root {
+        --primary: #4e73df;
+        --primary-light: #6e8efb;
+        --secondary: #2e59d9;
+        --dark: #2c3e50;
+        --light: #f8f9fc;
+        --gray: #858796;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    .container {
+    /* Search Form */
+    .search-form {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        margin: 2rem auto;
+        max-width: 800px;
+        transition: var(--transition);
+    }
+
+    .search-form:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-input {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.75rem 1.25rem;
+        transition: var(--transition);
+    }
+
+    .search-input:focus {
+        border-color: var(--primary-light);
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.15);
+    }
+
+    .search-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        transition: var(--transition);
+    }
+
+    .search-btn:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+    }
+
+    /* Headmaster Section */
+    .headmaster-section {
+        text-align: center;
+        margin: 3rem auto;
+        max-width: 1200px;
+    }
+
+    .headmaster-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: var(--transition);
+        display: inline-block;
+        margin: 0 auto;
+    }
+
+    .headmaster-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .headmaster-title {
+        background: var(--primary);
+        color: white;
+        padding: 1rem;
+        font-weight: 600;
+    }
+
+    .headmaster-img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-bottom: 4px solid var(--primary);
+    }
+
+    .headmaster-info {
+        padding: 1.5rem;
+        text-align: left;
+    }
+
+    .headmaster-name {
+        color: var(--dark);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .headmaster-contact {
+        color: var(--gray);
+        margin-bottom: 0.5rem;
+    }
+
+    .call-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1.5rem;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+    .call-btn:hover {
+        background: var(--secondary);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(78, 115, 223, 0.3);
+    }
+
+    .call-btn i {
+        margin-right: 0.5rem;
+    }
+
+    /* Teachers Section */
+    .teachers-section {
+        max-width: 1200px;
+        margin: 3rem auto;
+        padding: 0 1rem;
+    }
+
+    .section-title {
+        color: var(--dark);
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(to right, var(--primary), var(--primary-light));
+        border-radius: 3px;
+    }
+
+    .teachers-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        justify-items: center;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
     }
 
-    .haedpic,
-    .teachpic {
-        width: 18rem;
-        height: 50vh;
+    .teacher-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
     }
 
+    .teacher-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
 
-    @media (max-width:768px) {
-        .container {
-            margin-top: 20%;
+    .teacher-img-container {
+        height: 250px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .teacher-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+    }
+
+    .teacher-card:hover .teacher-img {
+        transform: scale(1.05);
+    }
+
+    .default-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 2rem;
+        background: #f8f9fc;
+    }
+
+    .teacher-info {
+        padding: 1.5rem;
+    }
+
+    .teacher-name {
+        color: var(--dark);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .teacher-detail {
+        color: var(--gray);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        grid-column: 1 / -1;
+    }
+
+    .empty-state-icon {
+        font-size: 3rem;
+        color: var(--gray);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state-text {
+        color: var(--gray);
+        font-size: 1.2rem;
+    }
+
+    /* Search Results */
+    .search-results {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .search-form {
+            margin-top: 1rem;
         }
-
-        .form {
-            margin-top: 20%;
+        
+        .headmaster-img {
+            height: 250px;
         }
-
-        .haedpic,
-        .teachpic {
-            width: 18rem;
-            height: 30vh; 
+        
+        .teacher-img-container {
+            height: 200px;
         }
-
+        
+        .teachers-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
-
-<form method="get" class="form p-4">
-    {%csrf_token%}
-    <div class="d-flex justify-content-center">
-        <input type="search" class="form-control" placeholder="search by name or class" name="search" required>
-        <button type="submit" class="btn btn-primary mx-4">search</button>
+<!-- Search Form -->
+<form method="get" class="search-form">
+    {% csrf_token %}
+    <div class="row g-2">
+        <div class="col-md-9">
+            <input type="search" class="form-control search-input" placeholder="Search by name or class..." name="search" required>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn search-btn w-100">
+                <i class="fas fa-search me-2"></i> Search
+            </button>
+        </div>
     </div>
 </form>
 
-
-<div class="d-flex justify-content-center p-3 head">
+<!-- Headmaster Section -->
+<div class="headmaster-section">
     {% for head_name in headmaster %}
-    <div class="card shadow-lg d-flex justify-content-center" style="width: 18rem;">
-        <h2 class="text-center mt-2"> Head Master </h2>
-        <div class="d-flex justify-content-center"><img src=" {{head_name.picture}} " alt="{{head_name.name}}"
-                class="card-image haedpic"></div>
-        <div class="card-body">
-            <h4 class="card-tittle"><b>Name:</b> {{head_name.name}} </h4>
-            <p class="card-text"><b>PhoneNumber:</b> 0{{head_name.phoneNumber}}</p>
-            <p class="card-text"><b>PhoneNumber:</b> {{head_name.email}}</p>
-            <div class="d-flex justify-content-center"><a href="+233{{head_name.phoneNumber}}" class="btn btn-primary">
-                    Call </a></div>
+    <div class="headmaster-card">
+        <div class="headmaster-title">Headmaster</div>
+        <img src="{{ head_name.picture }}" alt="{{ head_name.name }}" class="headmaster-img">
+        <div class="headmaster-info">
+            <h3 class="headmaster-name">{{ head_name.name }}</h3>
+            <p class="headmaster-contact"><i class="fas fa-phone me-2"></i> 0{{ head_name.phoneNumber }}</p>
+            <p class="headmaster-contact"><i class="fas fa-envelope me-2"></i> {{ head_name.email }}</p>
+            <a href="tel:+233{{ head_name.phoneNumber }}" class="btn call-btn">
+                <i class="fas fa-phone"></i> Call Headmaster
+            </a>
         </div>
     </div>
-
-    {%endfor%}
+    {% endfor %}
 </div>
 
-<HR>
-</HR>
-
-<h1 class="text-center">TEACHERS</h1>
-<div class="container p-3 teachers">
-    {% for teacher in teachers %}
-    <div class="card shadow-lg" style="width: 18rem;">
-        {%if teacher.picture%}
-        <div class="d-flex justify-content-center"><img src="{{teacher.picture}}" class="card-img-top teachpic"
-                alt="{{teacher.name}}"></div>
-        {%else%}
-        <div class="d-flex justify-content-center"><img src="{% static 'images/logo1.png' %}" class="card-img-top"
-                alt="{{teacher.name}}" style="width: 250px; height: 30vh; border-radius: 360px;"></div>
-        {%endif%}
-        <div class="card-body text-center">
-            <h5 class="card-title">Name: {{teacher.name}}</h5>
-            <p class="card-text"> <b>Class Handle:</b> {{teacher.ClassHanlder}} </p>
-            <p class="card-text"> <b>Phone Number:</b> 0{{teacher.phoneNumber}} </p>
-            <p class="card-text"> <b>Age:</b> {{teacher.age}} </p>
-            <a href="tel:+233{{teacher.phoneNumber}}" class="btn btn-primary  ">Call</a>
+<!-- Teachers Section -->
+<div class="teachers-section">
+    <h2 class="section-title">Our Teaching Staff</h2>
+    
+    <div class="teachers-grid">
+        {% for teacher in teachers %}
+        <div class="teacher-card">
+            <div class="teacher-img-container">
+                {% if teacher.picture %}
+                <img src="{{ teacher.picture }}" alt="{{ teacher.name }}" class="teacher-img">
+                {% else %}
+                <img src="{% static 'images/logo1.png' %}" alt="{{ teacher.name }}" class="default-img">
+                {% endif %}
+            </div>
+            <div class="teacher-info">
+                <h4 class="teacher-name">{{ teacher.name }}</h4>
+                <p class="teacher-detail"><strong>Class:</strong> {{ teacher.ClassHanlder }}</p>
+                <p class="teacher-detail"><strong>Phone:</strong> 0{{ teacher.phoneNumber }}</p>
+                <p class="teacher-detail"><strong>Age:</strong> {{ teacher.age }}</p>
+                <a href="tel:+233{{ teacher.phoneNumber }}" class="btn call-btn w-100">
+                    <i class="fas fa-phone"></i> Call Teacher
+                </a>
+            </div>
         </div>
+        {% empty %}
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <h4>No Teachers Available</h4>
+            <p class="empty-state-text">There are currently no teachers listed in the directory.</p>
+        </div>
+        {% endfor %}
     </div>
-    {%empty%}
-    <h4 class="text-center no">No Teacher available</h4>
-    {%endfor%}
 </div>
 
+<!-- Search Results -->
 {% if search %}
-<style>
-    .teachers {
-        display: none;
-    }
-
-    .no {
-        display: none;
-    }
-
-    .haedpic,
-    .teachpic {
-        width: 18rem;
-        height: 30vh;
-    }
-
-    .container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        justify-items: center;
-    }
-
-    @media (max-width:768px) {
-        .container {
-            display: flex;
-            height: 100px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .haedpic,
-        .teachpic {
-            width: 18rem;
-            height: 30vh;
-        } 
-
-    } 
-
-</style>
-
-<div class="container">
-    {% for searched in search %}
-    <div class="card shadow-sm" style="width: 18rem;">
-        {%if searched.picture%} 
-        <div class="d-flex justify-conten
-        t-center"><img src="{{searched.picture}}" class="card-img-top teachpic" alt="{{searched.name}}"></div>
-        {%else%} 
-        <div class="d-flex justify-content-center"><img src="{% static 'images/logo1.png' %}" class="card-img-top"
-                alt="{{searched.name}}" style="width: 250px; height: 30vh; border-radius: 360px;"></div>
-        {%endif%}  
-        <div class="card-body">  
-            <h5 class="card-title">Name: {{searched.name}}</h5>
-            <p class="card-text"> <b>Class Handle:</b> {{searched.ClassHanlder}} </p>
-            <p class="card-text"> <b>Phone Number:</b> 0{{searched.phoneNumber}} </p>
-            <p class="card-text"> <b>Age:</b> {{searched.age}} </p>
-            <a href="tel:+233{{searched.phoneNumber}}" class="btn btn-primary">Call</a>
-        </div> 
-    </div> 
-    {%endfor%}
+<div class="search-results">
+    <h2 class="section-title">Search Results for "{{ search_query }}"</h2>
+    
+    <div class="teachers-grid">
+        {% for searched in search %}
+        <div class="teacher-card">
+            <div class="teacher-img-container">
+                {% if searched.picture %}
+                <img src="{{ searched.picture }}" alt="{{ searched.name }}" class="teacher-img">
+                {% else %}
+                <img src="{% static 'images/logo1.png' %}" alt="{{ searched.name }}" class="default-img">
+                {% endif %}
+            </div>
+            <div class="teacher-info">
+                <h4 class="teacher-name">{{ searched.name }}</h4>
+                <p class="teacher-detail"><strong>Class:</strong> {{ searched.ClassHanlder }}</p>
+                <p class="teacher-detail"><strong>Phone:</strong> 0{{ searched.phoneNumber }}</p>
+                <p class="teacher-detail"><strong>Age:</strong> {{ searched.age }}</p>
+                <a href="tel:+233{{ searched.phoneNumber }}" class="btn call-btn w-100">
+                    <i class="fas fa-phone"></i> Call Teacher
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+{% endif %}
 
-{%endif%}
-{%endblock%}
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+{% endblock %}
