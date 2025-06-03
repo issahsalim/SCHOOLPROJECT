@@ -4,10 +4,9 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <meta name="viewpornt" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="shortcut icon" href="{% static 'images/9.ico'}" type="image/x-icon">
-
     <title>
         {% block title %} Royal {%endblock%}
     </title>
@@ -154,60 +153,59 @@
 
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto">
-
-
-
                     {% if request.user.is_superuser %}
-                    <li class="nav-item">
-                        <a class="nav-link fw-bold" aria-current="page" href="/admin/">Admin</a>
-                    </li>
-                    <li class="nav-item" id="signup">
-                        <a class="nav-link" aria-current="page" href="{% url 'general_signup' %}">Signup</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link active " aria-current="page" href="/admin/">Admin</a>
+                        </li>
+                         <li class="nav-item" class="signbtn">
+                            <a class="nav-link" aria-current="page" href="{% url 'general_signup' %}">Signup</a>
+                        </li>
+                        {%endif%}
+                        
 
-                    {% endif %}
+                       {% if request.user.is_authenticated and is_student %}
 
-                    {% if not request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'login' %}">Login</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link active " aria-current="page" href="{% url 'home' %}">Home</a>
+                        </li>
 
-                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_results' %}">Results</a>
+                        </li>
+                        {%endif%}
 
-                    {% if request.user.is_authenticated and is_student %}
-                    <li class="nav-item">
-                        <a class="nav-link active " aria-current="page" href="{% url 'home' %}">Home</a>
-                    </li>
-                    {%endif%} 
 
-                    {% if  request.user.is_authenticated and is_teacher %}
-                    <li class="nav-item">
-                        <a class="nav-link active " aria-current="page" href="{% url 'teacher_dashboard' %}">Home</a>
-                    </li>
-                    {% endif %}
+                        {% if is_teacher and user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active " aria-current="page"
+                                href="{% url 'teacher_dashboard' %}">Home</a>
+                        </li>
+                        {%endif%}
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'absence' %}">Report Issue</a>
-                    </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'announcement' %}">Announcements</a>
-                    </li>
+                        {% if not request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{% url 'login' %}">Login</a>
+                        </li>
+                       
+                        {%else%}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'absence' %}">Report Issue</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'announcement' %}">Announcements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'form_teachers' %}">Staffs</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        {%endif%}
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'form_teachers' %}">Staffs</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_results' %}">Results</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    </li>
-
-                    {% endif %}
                 </ul>
+
             </div>
         </div>
     </nav>
@@ -234,21 +232,27 @@
                         <li class="nav-item">
                             <a class="nav-link active " aria-current="page" href="/admin/">Admin</a>
                         </li>
-
-                        <li class="nav-item" class="signbtn">
+                         <li class="nav-item" class="signbtn">
                             <a class="nav-link" aria-current="page" href="{% url 'general_signup' %}">Signup</a>
                         </li>
                         {%endif%}
+                     
 
-                        {% if is_student %}
+                       {% if request.user.is_authenticated and is_student %}
+
                         <li class="nav-item">
-                            <a class="nav-link active text-info" aria-current="page" href="{% url 'home' %}">Home</a>
+                            <a class="nav-link active " aria-current="page" href="{% url 'home' %}">Home</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_results' %}">Results</a>
+                        </li>
+
                         {%endif%}
 
-                        {% if is_teacher %}
+                        {% if is_teacher and request.user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link active text-danger" aria-current="page"
+                            <a class="nav-link active " aria-current="page"
                                 href="{% url 'teacher_dashboard' %}">Home</a>
                         </li>
                         {%endif%}
@@ -258,6 +262,7 @@
                             <a class="nav-link" aria-current="page" href="{% url 'login' %}">Login</a>
                         </li>
                         {%else%}
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'absence' %}">Report Issue</a>
                         </li>
@@ -267,9 +272,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'form_teachers' %}">Staffs</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'student_results' %}">Results</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                         </li>
@@ -280,6 +283,11 @@
             </div>
         </div>
     </nav>
+    <style>
+
+
+
+    </style>
 
     
 

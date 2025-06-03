@@ -58,7 +58,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 </div>
-
 {% endfor %}
 {%endif%}
 
@@ -66,8 +65,8 @@
 <!-- Main Content -->
 <h2 class="p-4 text-center welcome fw-bold"  >You are Welcome To Royal School {%if request.user.is_authenticated %}, {{request.user.Student_name}}{%endif%} </h2>
 {% if user.is_superuser%}
-
 {% endif %}
+
 <!-- Carousel -->
 <div class="mb-3"> 
     <div id="autoImageCarousel" class="carousel slide mt-5" data-bs-ride="carousel" data-bs-interval="3000">
@@ -113,6 +112,8 @@
         height: 20rem;
 
     }
+
+    
     @media (max-width:678px) {
         .carousel-item img {
         object-fit: cover;
